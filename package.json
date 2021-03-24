@@ -2,5 +2,8 @@
   "name": "md2html",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "marked": "^2.0.1"
+  }
 }
