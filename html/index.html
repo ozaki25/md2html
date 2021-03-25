@@ -6,7 +6,7 @@
     <title>md2html</title>
   </head>
   <body>
-    <input type="file" id="input-file" accept=".md" multiple />
+    <input type="file" id="input-file" accept=".md" />
   </body>
   <script>
     /**
@@ -23,19 +23,35 @@
     inputFile.addEventListener('change', onChange);
 
     function onChange(event) {
-      var files = event.target.files;
-      for (var i = 0; i < files.length; i++) {
-        var reader = new FileReader();
-        reader.readAsText(files[i]);
-        reader.onload = onLoadFile;
-      }
+      var file = event.target.files[0];
+      var filename = file.name.split(/\.(?=[^.]+$)/)[0];
+
+      var reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = function (event) {
+        var md = event.target.result;
+        var html = marked(md);
+        console.log(filename);
+        console.log(md);
+        console.log(html);
+        downloadHtml(html, filename);
+      };
     }
 
-    function onLoadFile(event) {
-      var md = event.target.result;
-      var html = marked(md);
-      console.log(md);
-      console.log(html);
+    function downloadHtml(html, filename) {
+      var blob = new Blob([html], { type: 'text/html' });
+      if (window.navigator.msSaveBlob) {
+        // IE
+        window.navigator.msSaveBlob(blob, filename);
+      } else {
+        var url = window.URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        document.body.appendChild(link);
+        link.href = url;
+        link.download = filename;
+        link.click();
+        document.body.removeChild(link);
+      }
     }
   </script>
 </html>
