@@ -30,7 +30,7 @@
       reader.readAsText(file);
       reader.onload = function (event) {
         var md = event.target.result;
-        var html = marked(md);
+        var html = generateHtml(marked(md), filename);
         console.log(filename);
         console.log(md);
         console.log(html);
@@ -52,6 +52,21 @@
         link.click();
         document.body.removeChild(link);
       }
+    }
+
+    function generateHtml(html, title) {
+      // prettier-ignore
+      return '<!DOCTYPE html>\n' +
+             '<html lang="ja">\n' +
+               '<head>\n' +
+                 '<meta charset="utf-8" />\n' +
+                 '<meta name="viewport" content="width=device-width, initial-scale=1.0" />\n' +
+                 '<title>' + title + '</title>\n' +
+               '</head>\n' +
+               '<body>\n' +
+                 html + 
+               '</body>\n' +
+             '</html>'
     }
   </script>
 </html>
