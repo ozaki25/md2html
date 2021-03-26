@@ -24,7 +24,7 @@
 
     function onChange(event) {
       var file = event.target.files[0];
-      var filename = file.name.split(/\.(?=[^.]+$)/)[0];
+      var filename = file.name.split(/\.(?=[^.]+$)/)[0] + '.html';
 
       var reader = new FileReader();
       reader.readAsText(file);
